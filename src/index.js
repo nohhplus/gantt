@@ -443,9 +443,8 @@ export default class Gantt {
     make_grid_week() {
         if (this.view_is(VIEW_MODE.DAY)) {
             let day = this.gantt_start
-            while(date_utils.diff(day, this.gantt_end, 'day') < 0) {
                 if(day.getDay() != 6 && day.getDay() != 0) {
-                    continue;
+                    return;
                 }
 
                 const x =
@@ -473,7 +472,6 @@ export default class Gantt {
                 });
 
                 day = date_utils.add(day, 1, 'day');
-            }
         }
     }
 
