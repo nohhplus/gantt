@@ -461,14 +461,14 @@ export default class Gantt {
                     this.options.header_height +
                     this.options.padding / 2;
 
-                const class = (day.getDay() == 0) ? 'red-highlight' : 'blue-highlight'
+                const class_text = (day.getDay() == 0) ? 'red-highlight' : 'blue-highlight'
 
                 createSVG('rect', {
                     x,
                     y,
                     width,
                     height,
-                    class: class,
+                    class: class_text,
                     append_to: this.layers.grid
                 });
 
