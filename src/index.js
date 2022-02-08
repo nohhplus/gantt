@@ -443,8 +443,11 @@ export default class Gantt {
     make_grid_week() {
         if (this.view_is(VIEW_MODE.DAY)) {
             let day = this.gantt_start
-                if(day.getDay() != 6 && day.getDay() != 0) {
-                    return;
+            while (date_utils.diff(this.gantt_end, day, 'day') > 0) {
+                if (day.getDay() != 6 && day.getDay() != 0) {
+                    day = date_utils.add(day, 1, 'day');
+
+                    continue;
                 }
 
                 const x =
@@ -472,6 +475,7 @@ export default class Gantt {
                 });
 
                 day = date_utils.add(day, 1, 'day');
+            }
         }
     }
 
@@ -516,7 +520,7 @@ export default class Gantt {
 
     get_date_info(date, last_date, i) {
         if (!last_date) {
-            last_date = date_utils.add(date, 1, 'year');
+            last_date = date_utils.add(this.gantt_start, -1, 'day');
         }
         const date_text = {
             'Quarter Day_lower': date_utils.format(
