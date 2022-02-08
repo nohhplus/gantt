@@ -39,6 +39,14 @@ $handle-color: #ddd !default;
 		fill: $light-yellow;
 		opacity: 0.5;
 	}
+	.red-highlight {
+		fill: #fce3e3;
+		opacity: 0.5;
+	}
+	.blue-highlight {
+		fill: #e3e8fc;
+		opacity: 0.5;
+	}
 
 	.arrow {
 		fill: none;
@@ -134,8 +142,12 @@ $handle-color: #ddd !default;
 }
 
 .gantt-container {
-	position: relative;
-	overflow: auto;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+	left: 0px;
+	overflow: scroll;
 	font-size: 12px;
 
 	.popup-wrapper {
