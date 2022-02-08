@@ -472,7 +472,7 @@ export default class Gantt {
                     append_to: this.layers.grid
                 });
 
-                day = date_utils.add(date, 1, 'day');
+                day = date_utils.add(day, 1, 'day');
             }
         }
     }
