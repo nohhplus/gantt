@@ -42,7 +42,7 @@ export default class Gantt {
         } else {
             throw new TypeError(
                 'Frappé Gantt only supports usage of a string CSS selector,' +
-                    " HTML DOM element or SVG DOM element for the 'element' parameter"
+                " HTML DOM element or SVG DOM element for the 'element' parameter"
             );
         }
 
@@ -299,6 +299,7 @@ export default class Gantt {
         this.make_grid_header();
         this.make_grid_ticks();
         this.make_grid_highlights();
+        this.make_grid_week();
     }
 
     make_grid_background() {
@@ -307,7 +308,7 @@ export default class Gantt {
             this.options.header_height +
             this.options.padding +
             (this.options.bar_height + this.options.padding) *
-                this.tasks.length;
+            this.tasks.length;
 
         createSVG('rect', {
             x: 0,
@@ -424,7 +425,7 @@ export default class Gantt {
             const width = this.options.column_width;
             const height =
                 (this.options.bar_height + this.options.padding) *
-                    this.tasks.length +
+                this.tasks.length +
                 this.options.header_height +
                 this.options.padding / 2;
 
@@ -436,6 +437,43 @@ export default class Gantt {
                 class: 'today-highlight',
                 append_to: this.layers.grid
             });
+        }
+    }
+
+    make_grid_week() {
+        if (this.view_is(VIEW_MODE.DAY)) {
+            let day = this.gantt_start
+            while(date_utils.diff(day, this.gantt_end, 'day') < 0) {
+                if(day.getDay() != 6 && day.getDay() != 0) {
+                    continue;
+                }
+
+                const x =
+                    date_utils.diff(day, this.gantt_start, 'hour') /
+                    this.options.step *
+                    this.options.column_width;
+                const y = 0;
+
+                const width = this.options.column_width;
+                const height =
+                    (this.options.bar_height + this.options.padding) *
+                    this.tasks.length +
+                    this.options.header_height +
+                    this.options.padding / 2;
+
+                const class = (day.getDay() == 0) ? 'red-highlight' : 'blue-highlight'
+
+                createSVG('rect', {
+                    x,
+                    y,
+                    width,
+                    height,
+                    class: class,
+                    append_to: this.layers.grid
+                });
+
+                day = date_utils.add(date, 1, 'day');
+            }
         }
     }
 
@@ -510,8 +548,8 @@ export default class Gantt {
             'Half Day_upper':
                 date.getDate() !== last_date.getDate()
                     ? date.getMonth() !== last_date.getMonth()
-                      ? date_utils.format(date, 'D MMM', this.options.language)
-                      : date_utils.format(date, 'D', this.options.language)
+                        ? date_utils.format(date, 'D MMM', this.options.language)
+                        : date_utils.format(date, 'D', this.options.language)
                     : '',
             Day_upper:
                 date.getMonth() !== last_date.getMonth()
@@ -624,8 +662,8 @@ export default class Gantt {
 
         const scroll_pos =
             hours_before_first_task /
-                this.options.step *
-                this.options.column_width -
+            this.options.step *
+            this.options.column_width -
             this.options.column_width;
 
         parent_element.scrollLeft = scroll_pos;
